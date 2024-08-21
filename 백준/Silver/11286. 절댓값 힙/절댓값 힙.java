@@ -13,9 +13,9 @@ public class Main {
             int absX = Math.abs(x);
             int absY = Math.abs(y);
             if (absX == absY) {
-                return Integer.compare(x, y);  // 절댓값이 같으면 실제 값 비교
+                return Integer.compare(x, y);  
             } else {
-                return Integer.compare(absX, absY);  // 절댓값 기준 비교
+                return Integer.compare(absX, absY);  
             }
         });
         Scanner sc= new Scanner(System.in);
