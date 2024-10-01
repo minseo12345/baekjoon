@@ -9,16 +9,17 @@ class Solution {
     public int[] solution(int []arr) {
         int[] answer = {};
         Stack<Integer> stack = new Stack<>();
-        stack.push(arr[0]); // 연속된 값인지를 비교하기 위해 스택 최상단에 배열의 첫 값을 저장
-        for(int i = 1; i<arr.length; i++){
-            // 스택의 최상단 값과 현재 배열의 값을 비교하여 같지 않다면 연속된 값이 아니므로 스택에 추가
-            if(stack.peek() != arr[i]){
-                stack.push(arr[i]);
+        
+        for(int num : arr){
+          // 스택의 값이 비어있거나 , 스택의 최상단 값이 배열의 원소와 같지 않으면 연속한 값이 아니므로 스택에 push함
+            if( stack.isEmpty() || stack.peek() != num){
+                stack.push(num);
             }
         }
         answer = new int[stack.size()];
         for(int i = answer.length - 1; i >= 0; i--){
-            answer[i] = stack.pop(); 
+            answer[i] = stack.pop();
+
         }
         return answer;
     }
