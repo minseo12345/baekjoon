@@ -1,7 +1,5 @@
 import java.util.*;
 
-import java.util.Scanner;
-
 class Solution {
     public int solution(int[] nums) {
         int answer = 0;
@@ -10,9 +8,6 @@ class Solution {
             set.add(a);
         }
 
-        int max = nums.length/2;
-
-
-        return Math.min(set.size(),max);
+        return Math.min(set.size(),nums.length/2);
     }
 }
