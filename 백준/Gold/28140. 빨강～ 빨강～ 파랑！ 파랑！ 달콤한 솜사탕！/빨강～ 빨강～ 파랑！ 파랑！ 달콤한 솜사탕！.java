@@ -8,19 +8,16 @@ public class Main {
     static List<Integer> rq = new ArrayList<>();
     static List<Integer> bq = new ArrayList<>();
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringBuilder sb = new StringBuilder();
-        StringTokenizer str;
 
-        str = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(str.nextToken());
-        Q = Integer.parseInt(str.nextToken());
-
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        Q = Integer.parseInt(st.nextToken());
         S = br.readLine();
 
-        // R과 B의 인덱스 저장
         for (int i = 0; i < N; i++) {
             if (S.charAt(i) == 'R') {
                 rq.add(i);
@@ -30,9 +27,9 @@ public class Main {
         }
 
         for (int i = 0; i < Q; i++) {
-            str = new StringTokenizer(br.readLine());
-            int l = Integer.parseInt(str.nextToken());
-            int r = Integer.parseInt(str.nextToken());
+            st = new StringTokenizer(br.readLine());
+            int l = Integer.parseInt(st.nextToken());
+            int r = Integer.parseInt(st.nextToken());
 
             int aIdx = lowerBound(rq, l);
             if (aIdx == rq.size() || rq.get(aIdx) >= r) {
