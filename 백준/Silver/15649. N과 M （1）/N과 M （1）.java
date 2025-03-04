@@ -1,35 +1,39 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
+    static int N;
+    static int M;
+    static int [] arr;
+    static boolean [] visited;
+    public static void main(String[] args) throws IOException {
 
-    static int N, M;
-    static int[] sequence;
-    static boolean[] visited;
-
-    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+
         N = sc.nextInt();
         M = sc.nextInt();
-        sequence = new int[M];
-        visited = new boolean[N + 1];
 
-        generatePermutation(0);
+        arr = new int[M];
+        visited = new boolean[N+1];
+
+        dfs(0);
+
     }
 
-    public static void generatePermutation(int index) {
-        if (index == M) {
+    static void dfs(int idx){
+        if(idx == M){
             for (int i = 0; i < M; i++) {
-                System.out.print(sequence[i] + " ");
+                System.out.print(arr[i] + " ");
             }
             System.out.println();
             return;
         }
 
-        for (int i = 1; i <= N; i++) {
-            if (!visited[i]) {
+        for(int i = 1; i <= N; i++){
+            if(!visited[i]){
                 visited[i] = true;
-                sequence[index] = i;
-                generatePermutation(index + 1);
+                arr[idx] = i;
+                dfs(idx+1);
                 visited[i] = false;
             }
         }
