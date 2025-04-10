@@ -1,68 +1,87 @@
+import java.io.*;
 import java.util.*;
+class Node implements Comparable<Node> {
+    int index;
+    int cost;
 
-public class Main {
-
-    static class Node implements Comparable<Node> {
-        int n, w;
-
-        public Node(int n, int w) {
-            this.n = n;
-            this.w = w;
-        }
-
-        @Override
-        public int compareTo(Node node) {
-            return Integer.compare(this.w, node.w);
-        }
+    public Node(int index, int cost) {
+        this.index = index;
+        this.cost = cost;
     }
 
-    public static void main(String[] args) {
+    @Override
+    public int compareTo(Node o) {
+        return Integer.compare(cost, o.cost);
+    }
+}
+
+public class Main {
+    static int N,M;
+    static ArrayList<ArrayList<Node>> list;
+    static int [] dist;
+    static int [] visited;
+
+    public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
 
-        int N = sc.nextInt();
-        int M = sc.nextInt();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
 
-        ArrayList<ArrayList<Node>> graph = new ArrayList<>();
+        N = Integer.parseInt(br.readLine());
+        M = Integer.parseInt(br.readLine());
 
-        for (int i = 0; i <= N; i++) {
-            graph.add(new ArrayList<>());
-        }
+        list = new ArrayList<>();
+        dist = new int[N+1];
+        visited = new int[N+1];
 
-        for (int i = 0; i < M; i++) {
-            int n = sc.nextInt();
-            int m = sc.nextInt();
-            int w = sc.nextInt();
-
-            graph.get(n).add(new Node(m, w));
-        }
-
-        int start = sc.nextInt();
-        int end = sc.nextInt();
-
-        int[] dist = new int[N + 1];
         Arrays.fill(dist, Integer.MAX_VALUE);
+
+        for(int i = 0; i <= N; i++) {
+            list.add(new ArrayList<>());
+        }
+
+        for(int i = 0; i <M; i++){
+            st = new StringTokenizer(br.readLine());
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
+            int cost = Integer.parseInt(st.nextToken());
+
+            list.get(start).add(new Node(end, cost));
+        }
+
+        st = new StringTokenizer(br.readLine());
+        int start = Integer.parseInt(st.nextToken());
+        int end = Integer.parseInt(st.nextToken());
+
+        bw.write(dijkstra(start, end) + "\n");
+        bw.flush();
+        bw.close();
+        br.close();
+    }
+
+    public static int dijkstra(int start, int end){
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        boolean[] visited = new boolean[N+1];
+        pq.offer(new Node(start, 0));
         dist[start] = 0;
 
-        PriorityQueue<Node> pq = new PriorityQueue<>();
-        pq.offer(new Node(start, 0));
+        while (!pq.isEmpty()){
+            Node curNode = pq.poll();
+            int cur = curNode.index;
 
-        while (!pq.isEmpty()) {
-            Node current = pq.poll();
-            int now = current.n;
-            int cost = current.w;
+            if(!visited[cur]){
+                visited[cur] = true;
 
-            if (cost > dist[now]) continue;
-
-            for (Node next : graph.get(now)) {
-                int weightNew = dist[now] + next.w;
-                if (weightNew < dist[next.n]) {
-                    dist[next.n] = weightNew;
-                    pq.offer(new Node(next.n, weightNew));
+                for(Node node : list.get(cur)){
+                    if (!visited[node.index] && dist[node.index] > dist[cur] + node.cost){
+                        dist[node.index] = dist[cur] + node.cost;
+                        pq.add(new Node(node.index, dist[node.index]));
+                    }
                 }
             }
         }
 
-        System.out.println(dist[end]);
-        sc.close();
+        return dist[end];
     }
 }
