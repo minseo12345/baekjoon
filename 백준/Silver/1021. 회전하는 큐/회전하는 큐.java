@@ -1,43 +1,70 @@
-import java.util.*;
+import java.io.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.StringTokenizer;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        int M = sc.nextInt();
 
-        LinkedList<Integer> deque = new LinkedList<>();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        Deque<Integer> dq = new ArrayDeque<>();
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+
         for (int i = 1; i <= N; i++) {
-            deque.add(i);
+            dq.add(i);
         }
 
-        int[] targets = new int[M];
-        for (int i = 0; i < M; i++) {
-            targets[i] = sc.nextInt();
+        int [] targets = new int[M];
+
+        st = new StringTokenizer(br.readLine());
+
+        for(int i = 0; i<M; i++) {
+            targets[i] = Integer.parseInt(st.nextToken());
         }
 
-        int totalOperations = 0;
+        int total = 0;
 
-        for (int target : targets) {
-            int index = deque.indexOf(target);
-            int leftMoves = index;
-            int rightMoves = deque.size() - index;
+        for(int target : targets ) {
+            int idx = 0;
 
-            if (leftMoves <= rightMoves) { 
-                for (int i = 0; i < leftMoves; i++) {
-                    deque.addLast(deque.pollFirst());
-                }
-                totalOperations += leftMoves;
-            } else {
-                for (int i = 0; i < rightMoves; i++) {
-                    deque.addFirst(deque.pollLast());
-                }
-                totalOperations += rightMoves;
+            for (int num : dq) {
+                if (num == target) break;
+                idx++;
             }
 
-            deque.pollFirst();
-        }
+            int halfIdx;
 
-        System.out.println(totalOperations);
+            if (dq.size() % 2 == 0) {
+                halfIdx = dq.size() / 2 - 1;
+            } else {
+                halfIdx = dq.size() / 2;
+            }
+
+            if (idx <= halfIdx) {
+                for (int i = 0; i < idx; i++) {
+                    dq.addLast(dq.pollFirst());
+                    total++;
+                }
+            }
+
+            else {
+                for (int i = 0; i < dq.size() - idx; i++) {
+                    dq.addFirst(dq.pollLast());
+                    total++;
+                }
+            }
+
+            dq.pollFirst();
+        }
+        bw.write(String.valueOf(total));
+        bw.flush();
+        bw.close();
+        br.close();
+
     }
 }
